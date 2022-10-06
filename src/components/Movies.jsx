@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 
-import { getGenres } from '../../services/fakeGenreService';
-import Like from '../common/Like';
-import ListGroup from '../common/ListGroup';
-import movies from '../../services/fakeMovieService';
-import paginate from '../../utils/paginate';
-import Pagination from '../common/Pagination';
+import ListGroup from './common/ListGroup';
+import MoviesTable from './MoviesTable';
+import Pagination from './common/Pagination';
+import movies from '../services/fakeMovieService';
+import paginate from '../utils/paginate';
+import { getGenres } from '../services/fakeGenreService';
 
 class Movies extends Component {
-  // eslint-disable-next-line react/state-in-constructor
   state = {
     movieItems: [],
     currentPage: 1,
@@ -112,46 +111,11 @@ class Movies extends Component {
           {this.renderMoviesCount(filteredMovies)}
 
           { movieItems.length > 0 && (
-            <table className="table table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">Title</th>
-                  <th scope="col">Genre</th>
-                  <th scope="col">Stock</th>
-                  <th scope="col">Rate</th>
-                  <th scope="col" aria-label="Like" />
-                  <th scope="col" aria-label="Delete" />
-                </tr>
-              </thead>
-
-              <tbody>
-                {paginatedMovies.map((movie) => (
-                  <tr key={movie._id}>
-                    <td>{movie.title}</td>
-                    <td>{movie.genre.name}</td>
-                    <td>{movie.numberInStock}</td>
-                    <td>{movie.dailyRentalRate}</td>
-
-                    <td>
-                      <Like
-                        isLiked={movie.isLiked}
-                        onClick={() => this.handleLike(movie)}
-                      />
-                    </td>
-
-                    <td>
-                      <button
-                        className="btn btn-danger"
-                        type="button"
-                        onClick={() => this.deleteMovie(movie._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <MoviesTable
+              paginatedMovies={paginatedMovies}
+              onLike={this.handleLike}
+              onDelete={this.deleteMovie}
+            />
           )}
 
           <Pagination
