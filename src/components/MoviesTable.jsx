@@ -4,16 +4,18 @@ import PropTypes from 'prop-types';
 import Like from './common/Like';
 
 const MoviesTable = (props) => {
-  const { paginatedMovies, onDelete, onLike } = props;
+  const {
+    paginatedMovies, onDelete, onLike, onSort,
+  } = props;
 
   return (
     <table className="table table-hover">
       <thead>
         <tr>
-          <th scope="col">Title</th>
-          <th scope="col">Genre</th>
-          <th scope="col">Stock</th>
-          <th scope="col">Rate</th>
+          <th onClick={() => onSort('title')} scope="col">Title</th>
+          <th onClick={() => onSort('genre.name')} scope="col">Genre</th>
+          <th onClick={() => onSort('numberInStock')} scope="col">Stock</th>
+          <th onClick={() => onSort('dailyRentalRate')} scope="col">Rate</th>
           <th scope="col" aria-label="Like" />
           <th scope="col" aria-label="Delete" />
         </tr>
@@ -66,6 +68,7 @@ MoviesTable.propTypes = {
 
   onLike: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onSort: PropTypes.func.isRequired,
 };
 
 export default MoviesTable;
