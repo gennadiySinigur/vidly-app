@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 
 import ListGroup from './common/ListGroup';
 import MoviesTable from './MoviesTable';
@@ -13,6 +14,11 @@ class Movies extends Component {
     currentPage: 1,
     pageSize: 4,
     genres: [],
+
+    sortColumn: {
+      path: 'title',
+      order: 'asc',
+    },
   };
 
   componentDidMount() {
@@ -58,7 +64,18 @@ class Movies extends Component {
   };
 
   handleSort = (path) => {
-    console.log(path);
+    const sortColumn = { ...this.state.sortColumn };
+
+    if (sortColumn.path === path) {
+      sortColumn.order = (sortColumn.order === 'asc') ? 'desc' : 'asc';
+    } else {
+      sortColumn.path = path;
+      sortColumn.order = 'asc';
+    }
+
+    this.setState(() => (
+      { sortColumn }
+    ));
   };
 
   moviesCountFormat = () => {
@@ -96,13 +113,16 @@ class Movies extends Component {
       currentPage,
       genres,
       selectedGenre,
+      sortColumn,
     } = this.state;
 
     const filteredMovies = selectedGenre && selectedGenre._id ?
       movieItems.filter((movie) => movie.genre._id === selectedGenre._id) :
       movieItems;
 
-    const paginatedMovies = paginate(filteredMovies, currentPage, pageSize);
+    const sortedMovies = _.orderBy(filteredMovies, [sortColumn.path], [sortColumn.order]);
+
+    const paginatedMovies = paginate(sortedMovies, currentPage, pageSize);
 
     return (
       <div className="row">
