@@ -28,5 +28,12 @@ module.exports = {
     'react/jsx-curly-spacing': [2, { when: 'never', allowMultiline: false }],
     'operator-linebreak': ['error', 'after'],
     'react/state-in-constructor': ['error', 'never'],
+
+    'react/no-unstable-nested-components': [
+      'error',
+      { allowAsProps: true },
+    ],
+
+    'arrow-body-style': ['error', 'as-needed'],
   },
 };

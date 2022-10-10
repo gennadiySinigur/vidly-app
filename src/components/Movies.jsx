@@ -111,7 +111,11 @@ class Movies extends Component {
       movieItems.filter((movie) => movie.genre._id === selectedGenre._id) :
       movieItems;
 
-    const sortedMovies = _.orderBy(filteredMovies, [sortColumn.path], [sortColumn.order]);
+    const sortedMovies = _.orderBy(
+      filteredMovies,
+      [sortColumn.path],
+      [sortColumn.order],
+    );
 
     const paginatedMovies = paginate(sortedMovies, currentPage, pageSize);
 

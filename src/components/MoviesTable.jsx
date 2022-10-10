@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Like from './common/Like';
 import TableHeader from './common/TableHeader';
+import TableBody from './common/TableBody';
 
 class MoviesTable extends Component {
   columns = [
@@ -10,13 +11,34 @@ class MoviesTable extends Component {
     { path: 'genre.name', label: 'Genre' },
     { path: 'numberInStock', label: 'Stock' },
     { path: 'dailyRentalRate', label: 'Rate' },
-    { key: 'like' },
-    { key: 'delete' },
+
+    {
+      key: 'like',
+      content: (movie) => (
+        <Like
+          onClick={() => this.props.onLike(movie)}
+          isLiked={movie.isLiked}
+        />
+      ),
+    },
+
+    {
+      key: 'delete',
+      content: (movie) => (
+        <button
+          className="btn btn-danger"
+          type="button"
+          onClick={() => this.props.onDelete(movie._id)}
+        >
+          Delete
+        </button>
+      ),
+    },
   ];
 
   render() {
     const {
-      paginatedMovies, onDelete, onLike, onSort, sortColumn,
+      paginatedMovies, onSort, sortColumn,
     } = this.props;
 
     return (
@@ -27,33 +49,10 @@ class MoviesTable extends Component {
           onSort={onSort}
         />
 
-        <tbody>
-          {paginatedMovies.map((movie) => (
-            <tr key={movie._id}>
-              <td>{movie.title}</td>
-              <td>{movie.genre.name}</td>
-              <td>{movie.numberInStock}</td>
-              <td>{movie.dailyRentalRate}</td>
-
-              <td>
-                <Like
-                  isLiked={movie.isLiked}
-                  onClick={() => onLike(movie)}
-                />
-              </td>
-
-              <td>
-                <button
-                  className="btn btn-danger"
-                  type="button"
-                  onClick={() => onDelete(movie._id)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+        <TableBody
+          data={paginatedMovies}
+          columns={this.columns}
+        />
       </table>
     );
   }
