@@ -4,9 +4,9 @@ import _ from 'lodash';
 import ListGroup from './common/ListGroup';
 import MoviesTable from './MoviesTable';
 import Pagination from './common/Pagination';
-import movies from '../services/fakeMovieService';
-import paginate from '../utils/paginate';
+import { getMovies } from '../services/fakeMovieService';
 import { getGenres } from '../services/fakeGenreService';
+import paginate from '../utils/paginate';
 
 class Movies extends Component {
   state = {
@@ -27,7 +27,7 @@ class Movies extends Component {
       ...getGenres(),
     ];
 
-    this.setState({ movieItems: [...movies], genres });
+    this.setState({ movieItems: getMovies(), genres });
   }
 
   deleteMovie = (movieItemId) => {
@@ -97,12 +97,11 @@ class Movies extends Component {
     );
   };
 
-  render() {
+  getPagedData = () => {
     const {
       movieItems,
       pageSize,
       currentPage,
-      genres,
       selectedGenre,
       sortColumn,
     } = this.state;
@@ -117,7 +116,21 @@ class Movies extends Component {
       [sortColumn.order],
     );
 
-    const paginatedMovies = paginate(sortedMovies, currentPage, pageSize);
+    const movies = paginate(sortedMovies, currentPage, pageSize);
+
+    return { totalCount: filteredMovies.length, data: movies };
+  };
+
+  render() {
+    const {
+      movieItems,
+      pageSize,
+      currentPage,
+      genres,
+      sortColumn,
+    } = this.state;
+
+    const { totalCount, data: movies } = this.getPagedData();
 
     return (
       <div className="row">
@@ -130,11 +143,11 @@ class Movies extends Component {
         </div>
 
         <div className="col-10">
-          {this.renderMoviesCount(filteredMovies)}
+          {this.renderMoviesCount(movieItems)}
 
           { movieItems.length > 0 && (
             <MoviesTable
-              paginatedMovies={paginatedMovies}
+              paginatedMovies={movies}
               onLike={this.handleLike}
               onDelete={this.deleteMovie}
               onSort={this.handleSort}
@@ -143,7 +156,7 @@ class Movies extends Component {
           )}
 
           <Pagination
-            itemsCount={filteredMovies.length}
+            itemsCount={totalCount}
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChange={this.handlePageChange}
