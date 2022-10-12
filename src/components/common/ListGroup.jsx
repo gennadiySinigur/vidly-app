@@ -1,16 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ListGroup = (props) => {
-  const {
-    items,
-    textProperty,
-    valueProperty,
-    onItemSelect,
-    // eslint-disable-next-line react/prop-types
-    selectedItem,
-  } = props;
-
+const ListGroup = ({
+  items,
+  textProperty,
+  valueProperty,
+  onItemSelect,
+  // eslint-disable-next-line react/prop-types
+  selectedItem,
+}) => {
   function listGroupItemClasses(listItem) {
     return listItem === selectedItem ?
       'list-group-item active' :

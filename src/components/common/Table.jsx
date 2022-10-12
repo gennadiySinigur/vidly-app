@@ -3,30 +3,25 @@ import PropTypes, { shape } from 'prop-types';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
-const Table = (props) => {
-  const {
-    columns,
-    sortColumn,
-    onSort,
-    data,
-  } = props;
+const Table = ({
+  columns,
+  sortColumn,
+  onSort,
+  data,
+}) => (
+  <table className="table table-hover">
+    <TableHeader
+      columns={columns}
+      sortColumn={sortColumn}
+      onSort={onSort}
+    />
 
-  return (
-    <table className="table table-hover">
-      <TableHeader
-        columns={columns}
-        sortColumn={sortColumn}
-        onSort={onSort}
-      />
-
-      <TableBody
-        data={data}
-        columns={columns}
-      />
-    </table>
-  );
-};
-
+    <TableBody
+      data={data}
+      columns={columns}
+    />
+  </table>
+);
 Table.propTypes = {
   columns: PropTypes.arrayOf(
     shape({
