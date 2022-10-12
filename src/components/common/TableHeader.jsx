@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { shape } from 'prop-types';
 
 class TableHeader extends Component {
   raiseSort = (path) => {
@@ -63,10 +63,13 @@ TableHeader.propTypes = {
 
   onSort: PropTypes.func.isRequired,
 
-  columns: PropTypes.oneOfType({
-    path: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-  }).isRequired,
+  columns: PropTypes.arrayOf(
+    shape({
+      path: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    }).isRequired,
+  )
+    .isRequired,
 };
 
 export default TableHeader;

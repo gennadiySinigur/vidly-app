@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { shape } from 'prop-types';
 import _ from 'lodash';
 
 class TableBody extends Component {
@@ -35,25 +35,29 @@ class TableBody extends Component {
 }
 
 TableBody.propTypes = {
-  data: PropTypes.oneOfType({
-    _id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-
-    genre: PropTypes.shape({
+  data: PropTypes.arrayOf(
+    shape({
       _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    })
-      .isRequired,
+      title: PropTypes.string.isRequired,
 
-    numberInStock: PropTypes.number.isRequired,
-    dailyRentalRate: PropTypes.number.isRequired,
-  })
+      genre: PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+      })
+        .isRequired,
+
+      numberInStock: PropTypes.number.isRequired,
+      dailyRentalRate: PropTypes.number.isRequired,
+    }).isRequired,
+  )
     .isRequired,
 
-  columns: PropTypes.oneOfType({
-    path: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-  })
+  columns: PropTypes.arrayOf(
+    shape({
+      path: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    }).isRequired,
+  )
     .isRequired,
 };
 

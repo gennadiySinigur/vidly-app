@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { shape } from 'prop-types';
 
 import Like from './common/Like';
-import TableHeader from './common/TableHeader';
-import TableBody from './common/TableBody';
+import Table from './common/Table';
 
 class MoviesTable extends Component {
   columns = [
@@ -42,36 +41,32 @@ class MoviesTable extends Component {
     } = this.props;
 
     return (
-      <table className="table table-hover">
-        <TableHeader
-          columns={this.columns}
-          sortColumn={sortColumn}
-          onSort={onSort}
-        />
-
-        <TableBody
-          data={paginatedMovies}
-          columns={this.columns}
-        />
-      </table>
+      <Table
+        columns={this.columns}
+        data={paginatedMovies}
+        onSort={onSort}
+        sortColumn={sortColumn}
+      />
     );
   }
 }
 
 MoviesTable.propTypes = {
-  paginatedMovies: PropTypes.oneOfType({
-    _id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-
-    genre: PropTypes.shape({
+  paginatedMovies: PropTypes.arrayOf(
+    shape({
       _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    })
-      .isRequired,
+      title: PropTypes.string.isRequired,
 
-    numberInStock: PropTypes.number.isRequired,
-    dailyRentalRate: PropTypes.number.isRequired,
-  })
+      genre: PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+      })
+        .isRequired,
+
+      numberInStock: PropTypes.number.isRequired,
+      dailyRentalRate: PropTypes.number.isRequired,
+    }).isRequired,
+  )
     .isRequired,
 
   onLike: PropTypes.func.isRequired,
